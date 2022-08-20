@@ -20,16 +20,16 @@
 		<div class="card">
 			<div class="row">
 				<div class="col-md-5 wrapthumbnail">
-					<a href="post.html">
-						<div class="thumbnail" style="background-image:url(/bottle/blog/static/assets/img/demopic/1.jpg);" >
+					<a href="{% url 'blog-detail' object.pk %}">
+						<div class="thumbnail" style="background-image:url('{{ object.image.url }}');" >
 						</div>
-						<!-- <img src="{{ object.img }}" > -->ы
 					</a>
 				</div>
 				<div class="col-md-7">
 					<div class="card-block">
-						<h2 class="card-title"><a href="post.html">{{ object.title }}</a></h2>
-						<h4 class="card-text">{{ object.content }}</h4>
+						<h2 class="card-title"><a href="{% url 'blog-detail' object.pk %}">{{ object.title }}</a></h2>
+						<h4 class="card-text">{{ object.content|truncatewords:30 }}</h4>
+						
 						<div class="metafooter">
 							<div class="wrapfooter">
 								<span class="meta-footer-thumb">
