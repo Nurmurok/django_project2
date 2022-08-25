@@ -1,24 +1,25 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
     <div class="content-section">
         <form method="POST">
-           {% csrf_token %}
+            {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">
-                    Delete Post
+                    Join our team
                 </legend>
-                <h2>Sure u wanna delete {{ object.title }}?</h2>
+                {{ form|crispy }}
             </fieldset>
-            <div class="form-group mt-3">
+            <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">
-                    Delete
+                    Sign up
                 </button>
-                <a class="btn btn-outline-secondary" href="{% url 'blog-detail' object.id %}">
-                    Cancel
-                </a>
             </div>
         </form>
+    <div class="border-top" pt-3>
+        <small class="text-muted">
+            Have Account? <a href="{% url 'login' %}" class="ml-2">Sign In</a>
+        </small>
+    </div>
     </div>
 {% endblock %}
