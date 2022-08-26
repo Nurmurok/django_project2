@@ -7,22 +7,22 @@ from .models import Profile
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
 
-    class Mete:
+    class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
 
-class UserUpdateForm(UserCreationForm):
+class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
-    class Mete:
+    class Meta:
         model = User
         fields = ['username', 'email']
 
 
-class UserDeleteForm(UserCreationForm):
+class UserDeleteForm(forms.ModelForm):
 
-    class Mete:
+    class Meta:
         model = User
         fields = []
 
@@ -31,3 +31,4 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
+

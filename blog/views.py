@@ -17,9 +17,12 @@ class PostListView(ListView):
     context_object_name = 'object_list'
 
 
+
+
 class PostCreateViews(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content', 'post_date', 'image']
+
 
 
     def form_valid(self, form):

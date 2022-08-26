@@ -21,6 +21,44 @@
 			</div>
 		</div>
 	</div>
+<div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
+    </div>
+    {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username:</label>
+                            {{ user_form.username }}<br>
+                        <label class="small mb-1">Email:</label>
+                            {{ user_form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label class="small mb-1">Change Avatar:</label>
+                        <input type="file" name="image">
+                    </div>
+                    <a><button type="submit" class="btn btn-dark btn-lg">Save Changes</button></a>
+                <a class="btn btn-sm btn danger" href="{% url 'delete_user' user.id %}"><i class="fa-solid fa-user-slash"></i></i>Delete account</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</form>
 </div>
 <!-- End Top Author Meta
 ================================================== -->
@@ -32,21 +70,23 @@
 		<div class="listrecent listrelated">
 
 				<!-- begin post -->
+            {% for object in user_posts%}
+
 				<div class="authorpostbox">
 					<div class="card">
-						<a href="profile.html">
-						<img class="img-fluid img-thumb" src="assets/img/demopic/8.jpg" alt="">
+						<a href="{% url 'blog-detail' object.pk %}">
+						<img class="img-fluid img-thumb" src="{{object.image.url }}" alt="">
 						</a>
 						<div class="card-block">
-							<h2 class="card-title"><a href="post.html">Life is worth living forever and ever</a></h2>
+							<h2 class="card-title"><a href="{% url 'blog-detail' object.pk %}">{{ object.title }}</a></h2>
               <h4 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</h4>
             	<div class="metafooter">
 								<div class="wrapfooter">
 									<span class="meta-footer-thumb">
-									<a href="profile.html"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
+									<a href="{% url 'profile' %}"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
 									</span>
 									<span class="author-meta">
-									<span class="post-name"><a href="profile.html">Sal</a></span><br/>
+									<span class="post-name"><a href="{% url 'profile' %}">{{ object.author }}</a></span><br/>
 									<span class="post-date">22 July 2017</span><span class="dot"></span><span class="post-read">6 min read</span>
 									</span>
 									<span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
@@ -55,59 +95,10 @@
 						</div>
 					</div>
 				</div>
+            {% endfor %}
 				<!-- end post -->
 
-				<!-- begin post -->
-		    <div class="authorpostbox">
-					<div class="card">
-		        <a href="profile.html">
-		        <img class="img-fluid img-thumb" src="assets/img/demopic/10.jpg" alt="">
-		        </a>
-		        <div class="card-block">
-		          <h2 class="card-title"><a href="post.html">Best European capitals to visit and the costs implied</a></h2>
-              <h4 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</h4>
-              <div class="metafooter">
-		            <div class="wrapfooter">
-		              <span class="meta-footer-thumb">
-		              <a href="profile.html"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
-		              </span>
-		              <span class="author-meta">
-		              <span class="post-name"><a href="profile.html">Sal</a></span><br/>
-		              <span class="post-date">22 July 2017</span><span class="dot"></span><span class="post-read">6 min read</span>
-		              </span>
-		              <span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-		            </div>
-		          </div>
-		        </div>
-					</div>
-		    </div>
-				<!-- end post -->
 
-				<!-- begin post -->
-		    <div class="authorpostbox">
-					<div class="card">
-		        <a href="profile.html">
-		        <img class="img-fluid img-thumb" src="assets/img/demopic/9.jpg" alt="">
-		        </a>
-		        <div class="card-block">
-		          <h2 class="card-title"><a href="post.html">10 Things you should learn before visiting</a></h2>
-              <h4 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</h4>
-              <div class="metafooter">
-		            <div class="wrapfooter">
-		              <span class="meta-footer-thumb">
-		              <a href="profile.html"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
-		              </span>
-		              <span class="author-meta">
-		              <span class="post-name"><a href="profile.html">Sal</a></span><br/>
-		              <span class="post-date">22 July 2017</span><span class="dot"></span><span class="post-read">6 min read</span>
-		              </span>
-		              <span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-		            </div>
-		          </div>
-		        </div>
-					</div>
-		    </div>
-				<!-- end post -->
 
 		</div>
 	</div>

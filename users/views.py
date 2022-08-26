@@ -1,27 +1,38 @@
 from django.shortcuts import render
-from .forms import UserRegisterForm,UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.messages.views import SuccessMessageMixin
+from blog.models import Post
+from users.models import User
+from django.views import generic
+from django.urls import reverse_lazy
 
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Welcome{username}')
+            messages.success(request, f'Wellcome {username}')
             return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+class DeleteUser(SuccessMessageMixin,generic.DeleteView):
+    model = User
+    template_name = 'users/delete_user.html'
+    # success_message = "User has been deleted"
+    success_url = reverse_lazy('blog-home')
+
+
 @login_required
 def profile(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form= ProfileUpdateForm(
+        profile_form = ProfileUpdateForm(
             request.POST,
             request.FILES,
             instance=request.user.profile
@@ -31,14 +42,28 @@ def profile(request):
             profile_form.save()
             messages.success(request, f'Updated')
             return redirect('profile')
-
     else:
-        user_form=UserUpdateForm(instance=request.user)
+        user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
-    context = {
-        'user_form': user_form,
-        'profile_form': profile_form
+        user_posts = Post.objects.filter(author=request.user)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'user_posts': user_posts
+        }
 
-    }
-    return  render(request, 'users/profile.html', context)
+    return render(request, 'users/profile.html', context)
 
+
+def del_user(request, username):
+    try:
+        user_posts = Post.objects.filter(author=request.user)
+        user_posts.delete()
+        messages.success(request, "The user is deleted")
+
+    except username.DoesNotExist:
+        messages.error(request, "User doesnot exist")
+        return render(request, 'users/profile.html')
+
+
+    return render(request, 'users/profile.html')
