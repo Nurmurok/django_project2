@@ -7,7 +7,8 @@ from django.views.generic import (
     CreateView,
     DetailView,
     UpdateView,
-    DeleteView
+    DeleteView,
+
     )
 
 

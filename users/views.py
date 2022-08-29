@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
+
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -21,11 +23,22 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+
 class DeleteUser(SuccessMessageMixin,generic.DeleteView):
     model = User
     template_name = 'users/delete_user.html'
-    # success_message = "User has been deleted"
+    success_message = "User has been deleted"
     success_url = reverse_lazy('blog-home')
+
+# class User_Detail(TemplateView):
+#     template_name = 'users/profile.html'
+#
+#     def get(self, request, username):
+#         values = Choose.objects.all()
+#         # получаем пользователя по username если он существует
+#         user = get_object_or_404(User, username=username) # используем для вывода уникальной информации пользователя
+#         # передаем его в шаблон как profile
+#         return render(request, self.template_name, {'profile': user, "values": values})
 
 
 @login_required
@@ -55,15 +68,5 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
-def del_user(request, username):
-    try:
-        user_posts = Post.objects.filter(author=request.user)
-        user_posts.delete()
-        messages.success(request, "The user is deleted")
-
-    except username.DoesNotExist:
-        messages.error(request, "User doesnot exist")
-        return render(request, 'users/profile.html')
 
 
-    return render(request, 'users/profile.html')

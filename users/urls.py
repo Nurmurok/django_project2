@@ -14,8 +14,12 @@ urlpatterns = [
                                                          template_name='users/logout.html',
                                                          redirect_field_name=''
                                                   ), name='logout'),
+
     path('profile/', profile, name='profile'),
-    path('delete_user<int:pk>/',views.DeleteUser.as_view(),name='delete_user')
+    path('delete_user<int:pk>/',views.DeleteUser.as_view(),name='delete_user'),
+    # path('user_detail<int:pk>/',views.User_Detail,name='user_detail')
+
+
 
 
 
