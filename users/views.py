@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
@@ -30,15 +30,7 @@ class DeleteUser(SuccessMessageMixin,generic.DeleteView):
     success_message = "User has been deleted"
     success_url = reverse_lazy('blog-home')
 
-# class User_Detail(TemplateView):
-#     template_name = 'users/profile.html'
-#
-#     def get(self, request, username):
-#         values = Choose.objects.all()
-#         # получаем пользователя по username если он существует
-#         user = get_object_or_404(User, username=username) # используем для вывода уникальной информации пользователя
-#         # передаем его в шаблон как profile
-#         return render(request, self.template_name, {'profile': user, "values": values})
+
 
 
 @login_required
@@ -66,6 +58,20 @@ def profile(request):
         }
 
     return render(request, 'users/profile.html', context)
+
+
+@login_required
+def user_detail(request, pk):
+    user = User.objects.get(pk=pk)
+    posts = Post.objects.filter(author_id=pk)
+
+    context = {
+        'user':user,
+        'posts':posts
+
+    }
+    return  render(request, 'users/user_detail.html', context)
+
 
 
 

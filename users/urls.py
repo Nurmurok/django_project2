@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register, profile
+from .views import register, profile,user_detail
 from django.contrib.auth import views as auth_view
 from users import views
 
@@ -16,8 +16,10 @@ urlpatterns = [
                                                   ), name='logout'),
 
     path('profile/', profile, name='profile'),
+
     path('delete_user<int:pk>/',views.DeleteUser.as_view(),name='delete_user'),
-    # path('user_detail<int:pk>/',views.User_Detail,name='user_detail')
+    path('detail/<int:pk>/', user_detail, name = 'user-detail')
+
 
 
 
