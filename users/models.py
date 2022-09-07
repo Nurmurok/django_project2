@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='user_default.jpg', upload_to='profile_image/')
@@ -18,5 +19,13 @@ class Profile(models.Model):
             output_size = (150, 150)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+
+
+
+
+
+
+
 
 

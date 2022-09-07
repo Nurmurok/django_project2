@@ -83,11 +83,11 @@
 						</a>
 						<div class="card-block">
 							<h2 class="card-title"><a href="{% url 'blog-detail' object.pk %}">{{ object.title }}</a></h2>
-              <h4 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</h4>
+              <h4 class="card-text"><a href="{% url 'blog-detail' object.pk %}">{{ object.content }}</a></h4>
             	<div class="metafooter">
 								<div class="wrapfooter">
 									<span class="meta-footer-thumb">
-									<a href="{% url 'profile' %}"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
+									<a href="{% url 'profile' %}"><img class="author-thumb" src="{{object.author.profile.image.url}}" alt="Sal"></a>
 									</span>
 									<span class="author-meta">
 									<span class="post-name"><a href="{% url 'profile' %}">{{ object.author }}</a></span><br/>
